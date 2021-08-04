@@ -1,7 +1,16 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { Routes } from "./src/Routes";
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import React from 'react';
+import { Routes } from './src/Routes';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
-  return <Routes />;
+  return (
+    <ApolloProvider client={client}>
+      <Routes />
+    </ApolloProvider>
+  );
 }

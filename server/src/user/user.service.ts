@@ -26,7 +26,7 @@ export class UserService {
   }
 
   async CreateUser(data: RegisterInput): Promise<string> {
-    const exists = await this.userRepository.findOneOrFail({
+    const exists = await this.userRepository.findOne({
       email: data.email,
     });
     if (exists) {
