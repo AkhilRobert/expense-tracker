@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Keyboard,
   SafeAreaView,
@@ -13,8 +13,9 @@ import tailwind from 'tailwind-rn';
 import * as yup from 'yup';
 import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { TokenContext } from '../context/TokenContext';
 import { useLoginMutation } from '../__generated__/graphql';
-import { RootStackParamList } from '../Routes';
+import { RootStackParamList } from './Index';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'Login'>;
@@ -31,6 +32,8 @@ const validationSchema = yup.object().shape({
 export const Login = ({ navigation }: Props) => {
   const [login, { loading, data }] = useLoginMutation();
 
+  const { updateToken } = useContext(TokenContext);
+
   const { values, handleChange, handleSubmit, errors, handleBlur, touched } =
     useFormik({
       initialValues: {
@@ -39,9 +42,10 @@ export const Login = ({ navigation }: Props) => {
       },
       onSubmit: async (value) => {
         Keyboard.dismiss();
-        await login({ variables: { input: value } });
-        if (data) {
-          alert(data.login.token);
+        const { data } = await login({ variables: { input: value } });
+        const token = data?.login.token;
+        if (token) {
+          updateToken(token);
         }
       },
       validationSchema,

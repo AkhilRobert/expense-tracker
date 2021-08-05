@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Keyboard,
   Platform,
@@ -13,8 +13,9 @@ import tailwind from 'tailwind-rn';
 import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../Routes';
+import { RootStackParamList } from './Index';
 import { useRegisterMutation } from '../__generated__/graphql';
+import { TokenContext } from '../context/TokenContext';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'Register'>;
@@ -32,6 +33,8 @@ const validationSchema = yup.object().shape({
 export const Register = ({ navigation }: Props) => {
   const [register, { loading, data }] = useRegisterMutation();
 
+  const { updateToken } = useContext(TokenContext);
+
   const { values, handleChange, handleSubmit, errors, handleBlur, touched } =
     useFormik({
       initialValues: {
@@ -41,9 +44,10 @@ export const Register = ({ navigation }: Props) => {
       },
       onSubmit: async (value) => {
         Keyboard.dismiss();
-        await register({ variables: { input: value } });
-        if (data) {
-          alert(data.register.token);
+        const { data } = await register({ variables: { input: value } });
+        const token = data?.register.token;
+        if (token) {
+          updateToken(token);
         }
       },
       validationSchema,
