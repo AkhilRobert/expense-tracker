@@ -14,7 +14,7 @@ import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Routes';
-import { useRegisterMutation } from '../generated/graphql';
+import { useRegisterMutation } from '../__generated__/graphql';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'Register'>;
@@ -131,7 +131,7 @@ export const Register = ({ navigation }: Props) => {
           </View>
         </View>
         <View style={tailwind('flex-row justify-center')}>
-          <Text style={tailwind('text-lg')}>Already Have an accoung?</Text>
+          <Text style={tailwind('text-lg')}>Already Have an account?</Text>
           <Text
             style={{ ...tailwind('text-lg font-bold'), color: '#21CE99' }}
             onPress={() => navigation.replace('Login')}

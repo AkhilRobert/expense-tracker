@@ -30,7 +30,7 @@ export type MeResult = {
   __typename?: 'MeResult';
   ok: Scalars['Boolean'];
   error?: Maybe<Scalars['String']>;
-  user?: Maybe<UserEntity>;
+  data?: Maybe<UserEntity>;
 };
 
 export type Mutation = {
@@ -52,11 +52,6 @@ export type MutationLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   me: MeResult;
-};
-
-
-export type QueryMeArgs = {
-  token: Scalars['String'];
 };
 
 export type RegisterInput = {

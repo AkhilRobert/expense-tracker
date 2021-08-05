@@ -13,7 +13,7 @@ import tailwind from 'tailwind-rn';
 import * as yup from 'yup';
 import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { useLoginMutation } from '../generated/graphql';
+import { useLoginMutation } from '../__generated__/graphql';
 import { RootStackParamList } from '../Routes';
 
 interface Props {
@@ -29,7 +29,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const Login = ({ navigation }: Props) => {
-  const [login, { loading, data, error }] = useLoginMutation();
+  const [login, { loading, data }] = useLoginMutation();
 
   const { values, handleChange, handleSubmit, errors, handleBlur, touched } =
     useFormik({
@@ -40,8 +40,6 @@ export const Login = ({ navigation }: Props) => {
       onSubmit: async (value) => {
         Keyboard.dismiss();
         await login({ variables: { input: value } });
-        console.log(errors);
-        console.log(data);
         if (data) {
           alert(data.login.token);
         }
