@@ -5,5 +5,5 @@ import { Result } from './result.dto';
 @ObjectType()
 export class MeResult extends Result {
   @Field({ nullable: true })
-  user?: UserEntity;
+  data?: UserEntity;
 }

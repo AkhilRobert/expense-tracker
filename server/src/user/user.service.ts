@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 @Injectable()
 export class UserService {
   private JWT_SECRET: string;
+
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
@@ -20,9 +21,8 @@ export class UserService {
     return jwt.sign({ id }, this.JWT_SECRET);
   }
 
-  async getUserByToken(token: string): Promise<UserEntity> {
-    const user = jwt.verify(token, this.JWT_SECRET);
-    return this.userRepository.findOne({ id: (user as any).id });
+  async getUserByID(id: string): Promise<UserEntity> {
+    return this.userRepository.findOne(id);
   }
 
   async CreateUser(data: RegisterInput): Promise<string> {

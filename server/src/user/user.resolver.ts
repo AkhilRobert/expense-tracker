@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LoginInput, LoginResult } from './dto/login.dto';
 import { MeResult } from './dto/me.dto';
 import { RegisterInput, RegisterResult } from './dto/register.dto';
+import { User } from './user.decorator';
 import { UserModule } from './user.module';
 import { UserService } from './user.service';
 
@@ -10,19 +11,19 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => MeResult)
-  async me(@Args('token') token: string): Promise<MeResult> {
-    try {
-      const user = await this.userService.getUserByToken(token);
-      return {
-        ok: true,
-        user,
-      };
-    } catch (error) {
+  async me(@User() id: string | undefined): Promise<MeResult> {
+    if (!id) {
       return {
         ok: false,
-        error: error.message,
+        error: 'Not Authorized',
       };
     }
+
+    const user = await this.userService.getUserByID(id);
+    return {
+      ok: true,
+      data: user,
+    };
   }
 
   @Mutation(() => RegisterResult)
