@@ -55,4 +55,12 @@ export class UserService {
 
     return this.generateToken(user.id);
   }
+
+  async changeBudget(value: number, userID: string): Promise<number> {
+    const user = await this.userRepository.findOne(userID);
+    if (!user) throw new Error('Invalid user');
+    user.budget = value;
+    const current = await this.userRepository.save(user);
+    return current.budget;
+  }
 }

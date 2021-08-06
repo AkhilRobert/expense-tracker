@@ -4,7 +4,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/user.entity';
 import { UserModule } from './user/user.module';
+import { TransactionsModule } from './transactions/transaction.module';
+import { CommonModule } from './common/common.module';
 import Joi from 'joi';
+import { TransactionEntity } from './transactions/transaction.entity';
 
 @Module({
   imports: [
@@ -25,9 +28,11 @@ import Joi from 'joi';
       database: 'expense_tracker',
       synchronize: true,
       logging: true,
-      entities: [UserEntity],
+      entities: [UserEntity, TransactionEntity],
     }),
     UserModule,
+    TransactionsModule,
+    CommonModule,
   ],
 })
 export class AppModule {}

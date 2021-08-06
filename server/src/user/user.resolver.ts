@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { BudgetResult } from './dto/budget.dto';
 import { LoginInput, LoginResult } from './dto/login.dto';
 import { MeResult } from './dto/me.dto';
 import { RegisterInput, RegisterResult } from './dto/register.dto';
@@ -11,7 +12,7 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => MeResult)
-  async me(@User() id: string | undefined): Promise<MeResult> {
+  async Me(@User() id: string | undefined): Promise<MeResult> {
     if (!id) {
       return {
         ok: false,
@@ -27,12 +28,12 @@ export class UserResolver {
   }
 
   @Mutation(() => RegisterResult)
-  async register(@Args('input') input: RegisterInput): Promise<RegisterResult> {
+  async Register(@Args('input') input: RegisterInput): Promise<RegisterResult> {
     try {
       const token = await this.userService.CreateUser(input);
       return {
         ok: true,
-        error: null,
+        error: 'Not Authenticated',
         token: token,
       };
     } catch (error) {
@@ -50,7 +51,7 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResult)
-  async login(
+  async Login(
     @Args('input') { email, password }: LoginInput,
   ): Promise<LoginResult> {
     try {
@@ -58,6 +59,30 @@ export class UserResolver {
       return {
         ok: true,
         token,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: error.message,
+      };
+    }
+  }
+
+  @Mutation(() => BudgetResult)
+  async ChangeBudget(
+    @Args('value') value: number,
+    @User() userID: string,
+  ): Promise<BudgetResult> {
+    try {
+      if (!userID)
+        return {
+          ok: false,
+          error: 'Not Authenticated',
+        };
+      const currentValue = await this.userService.changeBudget(value, userID);
+      return {
+        ok: true,
+        currentValue,
       };
     } catch (error) {
       return {

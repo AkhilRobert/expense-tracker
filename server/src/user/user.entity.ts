@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TransactionEntity } from 'src/transactions/transaction.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity('user')
@@ -18,4 +19,13 @@ export class UserEntity {
 
   @Column('varchar')
   password: string;
+
+  @Column({ default: 0 })
+  @Field({ nullable: true })
+  budget: number;
+
+  @OneToMany(() => TransactionEntity, (transcation) => transcation.user, {
+    cascade: ['remove'],
+  })
+  transactions: TransactionEntity[];
 }
