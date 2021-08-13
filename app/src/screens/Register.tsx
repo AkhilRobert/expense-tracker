@@ -31,7 +31,9 @@ const validationSchema = yup.object().shape({
 });
 
 export const Register = ({ navigation }: Props) => {
-  const [register, { loading, data }] = useRegisterMutation();
+  const [register, { loading, data }] = useRegisterMutation({
+    fetchPolicy: 'no-cache',
+  });
 
   const { updateToken } = useContext(TokenContext);
 

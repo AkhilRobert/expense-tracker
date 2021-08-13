@@ -1,18 +1,14 @@
-import React, { useContext } from 'react';
-import { View, Text, Pressable } from 'react-native';
-import tailwind from 'tailwind-rn';
 import { FontAwesome } from '@expo/vector-icons';
-import { TokenContext } from '../context/TokenContext';
+import React from 'react';
+import { Pressable, Text, View } from 'react-native';
+import tailwind from 'tailwind-rn';
 
 interface Props {
   username: string;
+  handleLogout: () => void;
 }
 
-export const Header = ({ username }: Props) => {
-  const { removeToken } = useContext(TokenContext);
-
-  const handleLogout = () => removeToken();
-
+export const Header = ({ username, handleLogout }: Props) => {
   return (
     <View
       style={tailwind(

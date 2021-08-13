@@ -1,0 +1,13 @@
+query Transactions {
+  Transactions {
+    ok
+    error
+    data {
+      amount
+      type
+      id
+      title
+      createdAt
+    }
+  }
+}

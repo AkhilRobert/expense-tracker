@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { TokenContext } from '../context/TokenContext';
-import { useLoginMutation } from '../__generated__/graphql';
+import { LoginDocument, useLoginMutation } from '../__generated__/graphql';
 import { RootStackParamList } from './Index';
 
 interface Props {
@@ -30,7 +30,9 @@ const validationSchema = yup.object().shape({
 });
 
 export const Login = ({ navigation }: Props) => {
-  const [login, { loading, data }] = useLoginMutation();
+  const [login, { loading, data }] = useLoginMutation({
+    fetchPolicy: 'no-cache',
+  });
 
   const { updateToken } = useContext(TokenContext);
 

@@ -12,7 +12,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: any;
 };
+
 
 export type LoginInput = {
   email: Scalars['String'];
@@ -64,7 +67,7 @@ export type NewTranscationInput = {
 export type Query = {
   __typename?: 'Query';
   Me: MeResult;
-  AllTranscations: TranscationsResult;
+  Transactions: TranscationsResult;
 };
 
 export type RegisterInput = {
@@ -92,6 +95,7 @@ export type TransactionEntity = {
   amount: Scalars['Float'];
   title: Scalars['String'];
   type: TranscationType;
+  createdAt: Scalars['DateTime'];
 };
 
 export enum TranscationType {
@@ -134,6 +138,11 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', Register: { __typename?: 'RegisterResult', ok: boolean, error?: Maybe<string>, token?: Maybe<string> } };
+
+export type TransactionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TransactionsQuery = { __typename?: 'Query', Transactions: { __typename?: 'TranscationsResult', ok: boolean, error?: Maybe<string>, data?: Maybe<Array<{ __typename?: 'TransactionEntity', amount: number, type: TranscationType, id: string, title: string, createdAt: any }>> } };
 
 
 export const LoginDocument = gql`
@@ -249,3 +258,45 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const TransactionsDocument = gql`
+    query Transactions {
+  Transactions {
+    ok
+    error
+    data {
+      amount
+      type
+      id
+      title
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useTransactionsQuery__
+ *
+ * To run a query within a React component, call `useTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransactionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTransactionsQuery(baseOptions?: Apollo.QueryHookOptions<TransactionsQuery, TransactionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TransactionsQuery, TransactionsQueryVariables>(TransactionsDocument, options);
+      }
+export function useTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TransactionsQuery, TransactionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TransactionsQuery, TransactionsQueryVariables>(TransactionsDocument, options);
+        }
+export type TransactionsQueryHookResult = ReturnType<typeof useTransactionsQuery>;
+export type TransactionsLazyQueryHookResult = ReturnType<typeof useTransactionsLazyQuery>;
+export type TransactionsQueryResult = Apollo.QueryResult<TransactionsQuery, TransactionsQueryVariables>;
