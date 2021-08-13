@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import tailwind from 'tailwind-rn';
+import { PRIMARY_COLOR } from '../utils/constants';
 
 interface Props {
   text: string;
@@ -14,7 +15,7 @@ export const PrimaryButton = ({ text, onPress, loading }: Props) => {
       onPress={onPress}
       style={{
         ...tailwind('flex items-center justify-center p-4 rounded-xl'),
-        backgroundColor: '#21CE99',
+        backgroundColor: PRIMARY_COLOR,
       }}
     >
       <Text

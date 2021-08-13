@@ -1,9 +1,12 @@
-import React from 'react';
-import { useContext } from 'react';
-import { View, Text, Button, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useContext } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 import tailwind from 'tailwind-rn';
+import { Header } from '../components/Header';
+import { TotalTransaction } from '../components/TotalTranscation';
+import { Transaction } from '../components/Transaction';
 import { TokenContext } from '../context/TokenContext';
+import { PRIMARY_COLOR } from '../utils/constants';
+import { formatCurrency } from '../utils/format';
 import { useMeQuery } from '../__generated__/graphql';
 
 export const Home = () => {
@@ -25,7 +28,7 @@ export const Home = () => {
     );
   }
 
-  if (typeof data !== 'undefined' && loading) {
+  if (!data && loading) {
     return (
       <View style={tailwind('flex-1 items-center justify-center')}>
         <Text style={tailwind('font-bold text-xl text-red-500')}>
@@ -35,11 +38,28 @@ export const Home = () => {
     );
   }
 
+  const value = formatCurrency(data.Me.data?.balance!);
+
   return (
-    <SafeAreaView style={tailwind('bg-white')}>
-      <View style={{ ...tailwind('flex-col justify-between') }}>
-        <View style={tailwind('flex-col bg-white h-full')}></View>
+    <View style={{ ...tailwind('h-full'), backgroundColor: PRIMARY_COLOR }}>
+      <View style={{ ...tailwind('mt-10'), backgroundColor: PRIMARY_COLOR }}>
+        <Header username="bob" />
+        <View style={tailwind('px-4 mt-4')}>
+          <Text style={tailwind('text-white text-3xl font-bold mb-2')}>
+            Your Balance
+          </Text>
+          <Text style={tailwind('text-white text-2xl mb-2')}>{value}</Text>
+        </View>
       </View>
-    </SafeAreaView>
+      <View style={tailwind('flex-row justify-between my-4')}>
+        <TotalTransaction id="Income" value={data.Me.data?.income!} />
+        <View style={tailwind('px-4')}>
+          <TotalTransaction id="Expense" value={data.Me.data?.expense!} />
+        </View>
+      </View>
+      <View style={tailwind('bg-white h-full rounded-t-3xl')}>
+        <View style={tailwind('mx-4 my-8')}></View>
+      </View>
+    </View>
   );
 };

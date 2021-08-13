@@ -10,7 +10,7 @@ export class TransactionResolver {
   constructor(private transcationService: TransactionService) {}
 
   @Query(() => TranscationsResult)
-  async AllTranscations(@User() user: string): Promise<TranscationsResult> {
+  async Transcations(@User() user: string): Promise<TranscationsResult> {
     try {
       if (!user) {
         return {

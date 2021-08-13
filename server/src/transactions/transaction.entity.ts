@@ -1,6 +1,12 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum Type {
   EXPENSE,
@@ -32,6 +38,10 @@ export class TransactionEntity {
   })
   @Field(() => Type)
   type: Type;
+
+  @CreateDateColumn()
+  @Field()
+  createdAt: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.transactions)
   user: UserEntity;

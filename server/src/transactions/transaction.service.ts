@@ -18,6 +18,7 @@ export class TransactionService {
       .createQueryBuilder('transaction')
       .where('user.id = :id', { id: userID })
       .leftJoinAndSelect('transaction.user', 'user')
+      .orderBy('transaction.createdAt', 'DESC')
       .getMany();
   }
 
