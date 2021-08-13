@@ -43,7 +43,7 @@ export const Login = ({ navigation }: Props) => {
       onSubmit: async (value) => {
         Keyboard.dismiss();
         const { data } = await login({ variables: { input: value } });
-        const token = data?.login.token;
+        const token = data?.Login.token;
         if (token) {
           updateToken(token);
         }
@@ -98,14 +98,14 @@ export const Login = ({ navigation }: Props) => {
               </View>
             )}
 
-            {data && !data.login.ok && (
+            {data && !data.Login.ok && (
               <View
                 style={tailwind(
                   'mt-5 flex-row justify-center bg-red-300 p-4 rounded-xl'
                 )}
               >
                 <Text style={tailwind('font-bold text-base')}>
-                  {data.login.error}
+                  {data.Login.error}
                 </Text>
               </View>
             )}

@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { Text, View, TextInput } from "react-native";
 import tailwind from "tailwind-rn";
 

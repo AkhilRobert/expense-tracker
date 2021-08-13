@@ -1,11 +1,14 @@
 query Me {
-  me {
+  Me {
     ok
     error
     data {
       id
       email
       username
+      balance
+      income
+      expense
     }
   }
 }

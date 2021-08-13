@@ -35,8 +35,9 @@ export type MeResult = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  register: RegisterResult;
-  login: LoginResult;
+  Register: RegisterResult;
+  Login: LoginResult;
+  NewTranscation: Result;
 };
 
 
@@ -49,9 +50,21 @@ export type MutationLoginArgs = {
   input: LoginInput;
 };
 
+
+export type MutationNewTranscationArgs = {
+  input: NewTranscationInput;
+};
+
+export type NewTranscationInput = {
+  title: Scalars['String'];
+  amount: Scalars['Float'];
+  type: TranscationType;
+};
+
 export type Query = {
   __typename?: 'Query';
-  me: MeResult;
+  Me: MeResult;
+  AllTranscations: TranscationsResult;
 };
 
 export type RegisterInput = {
@@ -67,11 +80,40 @@ export type RegisterResult = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type Result = {
+  __typename?: 'Result';
+  ok: Scalars['Boolean'];
+  error?: Maybe<Scalars['String']>;
+};
+
+export type TransactionEntity = {
+  __typename?: 'TransactionEntity';
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  title: Scalars['String'];
+  type: TranscationType;
+};
+
+export enum TranscationType {
+  Expense = 'EXPENSE',
+  Income = 'INCOME'
+}
+
+export type TranscationsResult = {
+  __typename?: 'TranscationsResult';
+  ok: Scalars['Boolean'];
+  error?: Maybe<Scalars['String']>;
+  data?: Maybe<Array<TransactionEntity>>;
+};
+
 export type UserEntity = {
   __typename?: 'UserEntity';
   id: Scalars['ID'];
   email: Scalars['String'];
   username: Scalars['String'];
+  income: Scalars['Float'];
+  expense: Scalars['Float'];
+  balance: Scalars['Float'];
 };
 
 export type LoginMutationVariables = Exact<{
@@ -79,24 +121,24 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResult', ok: boolean, error?: Maybe<string>, token?: Maybe<string> } };
+export type LoginMutation = { __typename?: 'Mutation', Login: { __typename?: 'LoginResult', ok: boolean, error?: Maybe<string>, token?: Maybe<string> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'MeResult', ok: boolean, error?: Maybe<string>, data?: Maybe<{ __typename?: 'UserEntity', id: string, email: string, username: string }> } };
+export type MeQuery = { __typename?: 'Query', Me: { __typename?: 'MeResult', ok: boolean, error?: Maybe<string>, data?: Maybe<{ __typename?: 'UserEntity', id: string, email: string, username: string, balance: number, income: number, expense: number }> } };
 
 export type RegisterMutationVariables = Exact<{
   input: RegisterInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResult', ok: boolean, error?: Maybe<string>, token?: Maybe<string> } };
+export type RegisterMutation = { __typename?: 'Mutation', Register: { __typename?: 'RegisterResult', ok: boolean, error?: Maybe<string>, token?: Maybe<string> } };
 
 
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
-  login(input: $input) {
+  Login(input: $input) {
     ok
     error
     token
@@ -131,13 +173,16 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const MeDocument = gql`
     query Me {
-  me {
+  Me {
     ok
     error
     data {
       id
       email
       username
+      balance
+      income
+      expense
     }
   }
 }
@@ -171,7 +216,7 @@ export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($input: RegisterInput!) {
-  register(input: $input) {
+  Register(input: $input) {
     ok
     error
     token

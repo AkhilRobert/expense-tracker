@@ -22,10 +22,12 @@ export class UserService {
   }
 
   async getUserByID(id: string): Promise<UserEntity> {
-    return this.userRepository.findOne(id);
+    const user = await this.userRepository.findOne(id);
+    if (!user) throw new Error('Not a valid user');
+    return user;
   }
 
-  async CreateUser(data: RegisterInput): Promise<string> {
+  async createUser(data: RegisterInput): Promise<string> {
     const exists = await this.userRepository.findOne({
       email: data.email,
     });
@@ -42,7 +44,7 @@ export class UserService {
     return this.generateToken(user.id);
   }
 
-  async CheckUser(email: string, password: string): Promise<string> {
+  async checkUser(email: string, password: string): Promise<string> {
     const user = await this.userRepository.findOne({ email: email });
     if (!user) {
       throw new Error('Invalid username or password');
@@ -56,11 +58,7 @@ export class UserService {
     return this.generateToken(user.id);
   }
 
-  async changeBudget(value: number, userID: string): Promise<number> {
-    const user = await this.userRepository.findOne(userID);
-    if (!user) throw new Error('Invalid user');
-    user.budget = value;
-    const current = await this.userRepository.save(user);
-    return current.budget;
+  async save(user: UserEntity) {
+    await this.userRepository.save(user);
   }
 }

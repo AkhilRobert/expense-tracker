@@ -45,7 +45,7 @@ export const Register = ({ navigation }: Props) => {
       onSubmit: async (value) => {
         Keyboard.dismiss();
         const { data } = await register({ variables: { input: value } });
-        const token = data?.register.token;
+        const token = data?.Register.token;
         if (token) {
           updateToken(token);
         }
@@ -114,14 +114,14 @@ export const Register = ({ navigation }: Props) => {
               </View>
             )}
 
-            {data && !data.register.ok && (
+            {data && !data.Register.ok && (
               <View
                 style={tailwind(
                   'mt-5 flex-row justify-center bg-red-300 p-4 rounded-xl'
                 )}
               >
                 <Text style={tailwind('font-bold text-base')}>
-                  {data.register.error}
+                  {data.Register.error}
                 </Text>
               </View>
             )}

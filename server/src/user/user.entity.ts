@@ -21,8 +21,16 @@ export class UserEntity {
   password: string;
 
   @Column({ default: 0 })
-  @Field({ nullable: true })
-  budget: number;
+  @Field()
+  income: number;
+
+  @Column({ default: 0 })
+  @Field()
+  expense: number;
+
+  @Column({ default: 0 })
+  @Field()
+  balance: number;
 
   @OneToMany(() => TransactionEntity, (transcation) => transcation.user, {
     cascade: ['remove'],

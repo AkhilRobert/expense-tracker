@@ -1,5 +1,5 @@
 mutation Login($input: LoginInput!) {
-  login(input: $input) {
+  Login(input: $input) {
     ok
     error
     token

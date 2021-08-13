@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { BudgetResult } from './dto/budget.dto';
 import { LoginInput, LoginResult } from './dto/login.dto';
 import { MeResult } from './dto/me.dto';
 import { RegisterInput, RegisterResult } from './dto/register.dto';
@@ -13,27 +12,33 @@ export class UserResolver {
 
   @Query(() => MeResult)
   async Me(@User() id: string | undefined): Promise<MeResult> {
-    if (!id) {
+    try {
+      if (!id) {
+        return {
+          ok: false,
+          error: 'Not Authorized',
+        };
+      }
+
+      const user = await this.userService.getUserByID(id);
+      return {
+        ok: true,
+        data: user,
+      };
+    } catch (error) {
       return {
         ok: false,
-        error: 'Not Authorized',
+        error: error.message,
       };
     }
-
-    const user = await this.userService.getUserByID(id);
-    return {
-      ok: true,
-      data: user,
-    };
   }
 
   @Mutation(() => RegisterResult)
   async Register(@Args('input') input: RegisterInput): Promise<RegisterResult> {
     try {
-      const token = await this.userService.CreateUser(input);
+      const token = await this.userService.createUser(input);
       return {
         ok: true,
-        error: 'Not Authenticated',
         token: token,
       };
     } catch (error) {
@@ -55,34 +60,10 @@ export class UserResolver {
     @Args('input') { email, password }: LoginInput,
   ): Promise<LoginResult> {
     try {
-      const token = await this.userService.CheckUser(email, password);
+      const token = await this.userService.checkUser(email, password);
       return {
         ok: true,
         token,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error: error.message,
-      };
-    }
-  }
-
-  @Mutation(() => BudgetResult)
-  async ChangeBudget(
-    @Args('value') value: number,
-    @User() userID: string,
-  ): Promise<BudgetResult> {
-    try {
-      if (!userID)
-        return {
-          ok: false,
-          error: 'Not Authenticated',
-        };
-      const currentValue = await this.userService.changeBudget(value, userID);
-      return {
-        ok: true,
-        currentValue,
       };
     } catch (error) {
       return {

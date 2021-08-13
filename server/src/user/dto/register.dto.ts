@@ -3,7 +3,11 @@ import { Result } from 'src/common/common-result.dto';
 import { UserEntity } from '../user.entity';
 
 @InputType()
-export class RegisterInput extends OmitType(UserEntity, ['id'], InputType) {
+export class RegisterInput extends OmitType(
+  UserEntity,
+  ['id', 'balance', 'income', 'expense'],
+  InputType,
+) {
   @Field()
   password: string;
 }

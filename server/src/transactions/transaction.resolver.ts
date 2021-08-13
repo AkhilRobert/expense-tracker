@@ -12,7 +12,6 @@ export class TransactionResolver {
   @Query(() => TranscationsResult)
   async AllTranscations(@User() user: string): Promise<TranscationsResult> {
     try {
-      console.log(user);
       if (!user) {
         return {
           ok: false,

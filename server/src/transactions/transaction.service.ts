@@ -24,12 +24,21 @@ export class TransactionService {
   async addTranscation(userID: string, data: NewTranscationInput) {
     const user = await this.userService.getUserByID(userID);
     if (!user) throw new Error('Not a valid user');
+
     const transcation = this.transactionRepository.create({ ...data, user });
-    const newBudget =
-      data.type === Type.INCOME
-        ? user.budget + data.amount
-        : user.budget - data.amount;
-    await this.transactionRepository.save(transcation);
-    await this.userService.changeBudget(newBudget, userID);
+
+    if (data.type === Type.INCOME) {
+      user.income += data.amount;
+      user.balance += data.amount;
+      await this.transactionRepository.save(transcation);
+      await this.userService.save(user);
+    }
+
+    if (data.type === Type.EXPENSE) {
+      user.expense += data.amount;
+      user.balance -= data.amount;
+      await this.transactionRepository.save(transcation);
+      await this.userService.save(user);
+    }
   }
 }

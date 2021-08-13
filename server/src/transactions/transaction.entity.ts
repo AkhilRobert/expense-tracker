@@ -22,6 +22,10 @@ export class TransactionEntity {
   @Field()
   amount: number;
 
+  @Column()
+  @Field()
+  title: string;
+
   @Column({
     type: 'enum',
     enum: Type,

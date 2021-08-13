@@ -55,6 +55,7 @@ export default function App() {
       console.log(error);
     }
   };
+
   const removeToken = async () => {
     try {
       await AsyncStorage.removeItem('token');
