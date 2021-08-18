@@ -8,7 +8,7 @@ interface Props {
   value: number;
 }
 
-export const TotalTransaction = ({ id, value }: Props) => {
+export const TotalTransaction = ({ id, value = 0 }: Props) => {
   const finalValue = formatCurrency(value);
 
   return (

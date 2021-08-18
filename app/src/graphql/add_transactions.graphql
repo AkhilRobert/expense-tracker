@@ -1,0 +1,6 @@
+mutation NewTransaction($input: NewTranscationInput!) {
+  NewTranscation(input: $input) {
+    ok
+    error
+  }
+}

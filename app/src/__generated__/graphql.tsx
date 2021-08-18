@@ -120,6 +120,13 @@ export type UserEntity = {
   balance: Scalars['Float'];
 };
 
+export type NewTransactionMutationVariables = Exact<{
+  input: NewTranscationInput;
+}>;
+
+
+export type NewTransactionMutation = { __typename?: 'Mutation', NewTranscation: { __typename?: 'Result', ok: boolean, error?: Maybe<string> } };
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
@@ -145,6 +152,40 @@ export type TransactionsQueryVariables = Exact<{ [key: string]: never; }>;
 export type TransactionsQuery = { __typename?: 'Query', Transactions: { __typename?: 'TranscationsResult', ok: boolean, error?: Maybe<string>, data?: Maybe<Array<{ __typename?: 'TransactionEntity', amount: number, type: TranscationType, id: string, title: string, createdAt: any }>> } };
 
 
+export const NewTransactionDocument = gql`
+    mutation NewTransaction($input: NewTranscationInput!) {
+  NewTranscation(input: $input) {
+    ok
+    error
+  }
+}
+    `;
+export type NewTransactionMutationFn = Apollo.MutationFunction<NewTransactionMutation, NewTransactionMutationVariables>;
+
+/**
+ * __useNewTransactionMutation__
+ *
+ * To run a mutation, you first call `useNewTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNewTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [newTransactionMutation, { data, loading, error }] = useNewTransactionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useNewTransactionMutation(baseOptions?: Apollo.MutationHookOptions<NewTransactionMutation, NewTransactionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<NewTransactionMutation, NewTransactionMutationVariables>(NewTransactionDocument, options);
+      }
+export type NewTransactionMutationHookResult = ReturnType<typeof useNewTransactionMutation>;
+export type NewTransactionMutationResult = Apollo.MutationResult<NewTransactionMutation>;
+export type NewTransactionMutationOptions = Apollo.BaseMutationOptions<NewTransactionMutation, NewTransactionMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   Login(input: $input) {

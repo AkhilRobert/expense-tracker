@@ -13,9 +13,10 @@ import { useState } from 'react';
 import { TokenContext } from './src/context/TokenContext';
 import { Routes } from './src/screens/Index';
 import AppLoading from 'expo-app-loading';
+import { BASE_URL } from './src/utils/constants';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3000/graphql',
+  uri: BASE_URL,
 });
 
 const newAuthLink = setContext(async (_, { headers }) => {
