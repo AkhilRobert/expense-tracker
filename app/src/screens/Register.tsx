@@ -1,3 +1,5 @@
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useFormik } from 'formik';
 import React, { useContext } from 'react';
 import {
   Keyboard,
@@ -7,15 +9,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
 import tailwind from 'tailwind-rn';
+import * as yup from 'yup';
 import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from './Index';
-import { useRegisterMutation } from '../__generated__/graphql';
 import { TokenContext } from '../context/TokenContext';
+import { useRegisterMutation } from '../__generated__/graphql';
+import { RootStackParamList } from './Index';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'Register'>;

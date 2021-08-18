@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import tailwind from 'tailwind-rn';
 import { formatCurrency } from '../utils/format';
 

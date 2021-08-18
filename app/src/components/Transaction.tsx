@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import tailwind from 'tailwind-rn';
 import { Feather } from '@expo/vector-icons';
-import { TranscationType } from '../__generated__/graphql';
+import React from 'react';
+import { Text, View } from 'react-native';
+import tailwind from 'tailwind-rn';
 import { formatCurrency } from '../utils/format';
+import { TranscationType } from '../__generated__/graphql';
 
 export interface TransactionProps {
   title?: string;

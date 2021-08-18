@@ -3,18 +3,18 @@ import { useFormik } from 'formik';
 import React, { useContext } from 'react';
 import {
   Keyboard,
+  Platform,
   SafeAreaView,
+  StatusBar,
   Text,
   View,
-  StatusBar,
-  Platform,
 } from 'react-native';
 import tailwind from 'tailwind-rn';
 import * as yup from 'yup';
 import { CustomInput } from '../components/Input';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { TokenContext } from '../context/TokenContext';
-import { LoginDocument, useLoginMutation } from '../__generated__/graphql';
+import { useLoginMutation } from '../__generated__/graphql';
 import { RootStackParamList } from './Index';
 
 interface Props {

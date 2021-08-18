@@ -1,29 +1,29 @@
-import React from 'react';
+import { AntDesign, Octicons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
 import {
-  Text,
+  ActivityIndicator,
+  Keyboard,
+  Platform,
+  Pressable,
   SafeAreaView,
+  Text,
   TextInput,
   View,
-  Pressable,
-  Platform,
-  Keyboard,
 } from 'react-native';
 import tailwind from 'tailwind-rn';
-import { AntDesign } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from './Index';
+import * as yup from 'yup';
+import { FAB } from '../components/FAB';
+import { SelectItem } from '../components/SelectItem';
+import { useKeyboardHeight } from '../hooks/useKeyboardHeight';
 import { PRIMARY_COLOR } from '../utils/constants';
 import {
   TransactionsDocument,
   TranscationType,
   useNewTransactionMutation,
 } from '../__generated__/graphql';
-import { SelectItem } from '../components/SelectItem';
-import { FAB } from '../components/FAB';
-import { Octicons } from '@expo/vector-icons';
-import { useKeyboardHeight } from '../hooks/useKeyboardHeight';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
+import { RootStackParamList } from './Index';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'AddTransaction'>;
@@ -39,6 +39,7 @@ const schema = yup.object().shape({
 
 export const AddTransaction = ({ navigation }: Props) => {
   const [addTrasaction] = useNewTransactionMutation();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {
     handleSubmit,
@@ -57,8 +58,8 @@ export const AddTransaction = ({ navigation }: Props) => {
     validationSchema: schema,
     onSubmit: async (value) => {
       try {
+        setLoading(true);
         Keyboard.dismiss();
-        console.log(typeof value.amount);
 
         const { data } = await addTrasaction({
           variables: {
@@ -70,6 +71,7 @@ export const AddTransaction = ({ navigation }: Props) => {
           },
           refetchQueries: [TransactionsDocument],
         });
+        setLoading(false);
 
         if (data?.NewTranscation.ok) navigation.goBack();
       } catch (error) {
@@ -172,7 +174,11 @@ export const AddTransaction = ({ navigation }: Props) => {
         onPress={handleSubmit}
         bottom={Platform.OS === 'ios' ? keyboardHeight + 40 : undefined}
       >
-        <Octicons name="check" size={24} color="white" />
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Octicons name="check" size={24} color="white" />
+        )}
       </FAB>
     </>
   );

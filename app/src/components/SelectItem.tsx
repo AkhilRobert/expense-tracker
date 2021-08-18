@@ -1,6 +1,6 @@
-import React from 'react';
-import { FlatList, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
+import { Text, View } from 'react-native';
 import tailwind from 'tailwind-rn';
 import { PRIMARY_COLOR } from '../utils/constants';
 

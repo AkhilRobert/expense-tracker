@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text } from 'react-native';
 import tailwind from 'tailwind-rn';
 import { PRIMARY_COLOR } from '../utils/constants';
 

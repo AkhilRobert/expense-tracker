@@ -1,8 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect } from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { TokenContext } from '../context/TokenContext';
 import { AddTransaction } from './AddTransaction';
 import { Home } from './Home';
